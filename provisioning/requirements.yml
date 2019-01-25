@@ -1,0 +1,22 @@
+# This File contains requirements roles to run properly
+
+# Install Varnish role
+- src: geerlingguy.varnish
+
+# Install MySQL/MariaDB role
+- src: geerlingguy.mysql
+
+# Install Nginx role
+- src: geerlingguy.nginx
+
+# Install PHP role
+- src: geerlingguy.php
+
+# Install composer php
+- src: geerlingguy.composer
+
+# Install ImageMagick
+- src: zerohacks.imagemagick
+
+# Install Redis 
+- src: geerlingguy.redis
