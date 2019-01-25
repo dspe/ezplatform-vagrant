@@ -1,0 +1,18 @@
+# playbook.yml
+---
+- hosts: all
+  become: true
+  vars_files:
+      - vars/main.yml
+  roles:
+      - requirements-config
+      - ezplatform-config
+      - geerlingguy.varnish
+      - varnish-modules
+      - geerlingguy.mysql
+      - mysql-override
+      - geerlingguy.nginx
+      - geerlingguy.php
+      - geerlingguy.composer
+      - zerohacks.imagemagick
+      - geerlingguy.redis

@@ -1,0 +1,11 @@
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Copy Varnish custom VCL
+  template:
+    src: "{{ varnish_default_vcl_template_path }}"
+    dest: "{{ varnish_config_path }}/default.vcl"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart varnish

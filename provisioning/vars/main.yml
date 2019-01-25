@@ -1,0 +1,99 @@
+# main.yml
+---
+
+# eZ Platform Configuration
+#ez_source_name: ezenterprise-v2.4.1+2018.12.tar.gz
+ez_source_name: ezenterprise-trial-v2.4.0+2018.12.tar.gz
+
+# Varnish Configuration
+varnish_version: "6.0"
+varnish_use_default_vcl: false
+varnish_default_vcl_template_path: ez.vcl.j2
+varnish_listen_port: "6081" 
+varnish_default_backend_host: "127.0.0.1"
+varnish_default_backend_port: "80"
+varnish_storage: "malloc,256M"
+
+# Varnish modules
+varnish_modules_url: "https://download.varnish-software.com/varnish-modules/varnish-modules-0.15.0.tar.gz"
+
+# MySQL Configuration
+mysql_packages:
+  - mariadb-client
+  - mariadb-server
+  - python-mysqldb
+
+mysql_root_password: root
+mysql_slow_query_log_enable: true
+mysql_slow_query_time: 2
+mysql_wait_timeout: 300
+mysql_bind_address: "0.0.0.0"
+mysql_skip_name_resolve: ""
+mysql_innodb_default_row_format: "dynamic"
+mysql_supports_innodb_large_prefix: yes
+
+mysql_databases:
+  - name: ez
+    encoding: utf8mb4 
+    collation: utf8mb4_unicode_520_ci
+mysql_users:
+  - name: ez
+    host: "%"
+    password: ez
+    priv: "ez.*:ALL"
+
+# Nginx
+nginx_remove_default_vhost: true
+nginx_vhosts:
+  - server_name: "_"
+    template: "ez_vhost.j2"
+
+# PHP related config
+php_enablerepo: "ppa:ondrej/php"
+php_packages:
+  - php7.2
+  - php7.2-cli
+  - php7.2-common
+  - php7.2-dev
+  - php7.2-gd
+  - php7.2-mbstring
+  - php7.2-mysql
+  - php7.2-curl
+  - php7.2-fpm
+  - php7.2-opcache
+  - php7.2-xml
+  - php7.2-xsl
+  - php7.2-zip
+  - php7.2-intl
+  - php-redis
+
+#php_enablerepo: 'remi'
+php_webserver_daemon: "nginx"
+#php_packages_state: "latest"
+php_default_version_debian: "7.2"
+php_version: '7.2'
+php_versions_install_recommends: false
+
+php_enable_apc: false
+php_enable_php_fpm: true
+php_fpm_listen: "127.0.0.1:9000"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm_max_children: 50
+php_fpm_pm_start_servers: 5
+php_fpm_pm_min_spare_servers: 5
+php_fpm_pm_max_spare_servers: 5
+
+php_opcache_enable: "0"
+php_enable_apc: false
+php_memory_limit: "512M"
+php_max_execution_time: "300"
+php_date_timezone: "Europe/Paris"
+php_display_errors: "On"
+php_xdebug_max_nested_level: "500"
+
+# Redis Configuation
+redis_port: 6379
+redis_bind_interface: 127.0.0.1
+redis_databases: 16
+redis_loglevel: "notice"
+redis_logfile: /var/log/redis/redis-server.log

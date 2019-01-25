@@ -1,0 +1,11 @@
+---
+- name: Extract eZ tarball
+  unarchive:
+    src: /vagrant/data/{{ ez_source_name }}
+    dest: /var/www
+    owner: www-data
+    group: www-data
+    remote_src: yes
+    extra_opts:
+      - --transform
+      - 's!^[^/]\+\($\|/\)!ez\1!'

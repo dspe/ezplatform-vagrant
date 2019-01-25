@@ -1,0 +1,54 @@
+---
+- name: Ensure dependencies for building from source are installed (Debian).
+  apt:
+    name:
+      - automake
+      - autotools-dev
+      - libedit-dev
+      - libjemalloc-dev
+      - libncurses-dev
+      - libpcre3-dev
+      - libtool
+      - pkg-config
+      - python-docutils
+      - python-sphinx
+      - graphviz  
+      - make
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure Varnish development package is installed
+  apt:
+      name: varnish-dev
+      state: present
+
+- name: Download Varnish modules from sources
+  get_url:
+      url: "https://download.varnish-software.com/varnish-modules/varnish-modules-0.15.0.tar.gz"
+      dest: "/tmp/varnish_modules.tar.gz"
+  register: varnish_module_source
+
+- name: Unpacking Varnish Modules
+  unarchive:
+      copy: no
+      dest: /tmp/
+      src: "/tmp/varnish_modules.tar.gz"
+  when: varnish_module_source.changed
+  register: varnish_modules_unpack
+
+- name: Configuring Varnish Modules
+  command: "./configure"
+  args:
+      chdir: "/tmp/varnish-modules-0.15.0"
+  when: varnish_modules_unpack.changed
+  register: varnish_modules_configure
+
+- make:
+      chdir: "/tmp/varnish-modules-0.15.0"
+  when: varnish_modules_configure.changed
+
+- make:
+      chdir: "/tmp/varnish-modules-0.15.0"
+      target: install
+  become: yes
+  when: varnish_modules_configure.changed
